@@ -33,7 +33,7 @@
                                 <li><a class="dropdown-item" href="#">Admin</a></li>
                             </ul>
                         </div>
-                        <li class="nav-item"><a class="nav-link" href="#!">Sign Up</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Sign Up</a></li>
                     </ul>
                 </div>
             </div>

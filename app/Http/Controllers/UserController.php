@@ -6,7 +6,15 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function register() {
-        return "Hello from our controller";
+    /**
+     * Display form to create new user
+     */
+    public function register(Request $request) {
+        $incomingFields = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required'
+        ]);
+        return 'Hello';
     }
 }
