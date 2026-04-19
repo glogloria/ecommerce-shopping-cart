@@ -7,20 +7,23 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    // $path = $request->file('image') ->store('products', 'public');
     /**
-     * Display a listing of the resource.
+     * Display product
      */
     public function index()
     {
-        //
+        $products = Product::all();
+    
+        return view('admin.products', compact('products'));
     }
-
+    
     /**
-     * Show the form for creating a new resource.
+     * Show form to create new product
      */
     public function create()
     {
-        //
+        return view('admin.products-create');
     }
 
     /**
@@ -28,7 +31,14 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Product::Create([
+            'sku' => $request->sku,
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'image' => $request->file('image') ->store('products', 'public'),
+        ]);
+        return redirect()->route('admin.products')->with('success', 'Product added');
     }
 
     /**
