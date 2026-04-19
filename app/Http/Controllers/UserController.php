@@ -15,6 +15,6 @@ class UserController extends Controller
             'email' => 'required',
             'password' => 'required'
         ]);
-        return 'Hello';
+        return 'Registration complete';
     }
 }
