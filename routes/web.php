@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 # Home (not logged in)
@@ -18,17 +19,10 @@ Route::get('/home', function () {
 // Route to user registration form
 Route::get('/register', [RegisteredUserController::class, 'create']) ->name('register');
 
-/**
- * Display admin dashboard
- */
-Route::get('/admin', function() {
-    return view('../admin/admin-dashboard');
-});
-
 # Routes for admin 
 Route::middleware(['auth', 'admin'])->group(function () {
     // Show admin dashboard
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin-dashboard');
+    Route::get('/admin/dashboard', [DashboardController::class, 'admin_index'])->name('admin.dashboard');
     // List all products
     Route::get('/admin/products', [ProductController::class, 'index'])->name('admin.products');
     // Show add Product form
@@ -47,3 +41,9 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
