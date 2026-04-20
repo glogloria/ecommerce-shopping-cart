@@ -26,7 +26,9 @@ Route::get('/admin', function() {
 });
 
 # Routes for admin 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
+    // Show admin dashboard
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin-dashboard');
     // List all products
     Route::get('/admin/products', [ProductController::class, 'index'])->name('admin.products');
     // Show add Product form
