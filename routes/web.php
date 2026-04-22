@@ -13,7 +13,9 @@ Route::get("/", [HomeController::class, 'index'])->name('index');
 // Route to user registration form
 Route::get('/register', [RegisteredUserController::class, 'create']) ->name('register');
 
-// Routes for admin 
+/**
+ * Routes for admin
+ */
 Route::middleware(['auth', 'admin'])->group(function () {
     // Show admin dashboard
     Route::get('/admin/dashboard', [DashboardController::class, 'admin_index'])->name('admin.dashboard');
@@ -21,6 +23,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/products/create', [ProductController::class, 'create'])->name('admin.products.create');
     // Save new product
     Route::post('/admin/products', [ProductController::class, 'store'])->name('admin.products.store');
+    // Edit product
+    Route::get('/admin/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    // Save product changes 
+    Route::put('/admin/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    // Delete product
+    Route::delete('/admin/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
     // List all products
     Route::get('/admin/products', [ProductController::class, 'index'])->name('admin.products');
 
