@@ -45,10 +45,23 @@
             <div class="bg-white p-6 rounded shadow-lg w-full max-w-md">
                 <h2 class="text-xl font-semibold mb-4">Add New Product</h2>
 
-                <input id="productName"
+                <input id="sku"
                     type="text"
+                    name="sku"
+                    placeholder="SKU"
+                    class="w-full border rounded p-2 mb-4" required>
+                
+                <input id="name"
+                    type="text"
+                    name="name"
                     placeholder="Product name"
-                    class="w-full border rounded p-2 mb-4">
+                    class="w-full border rounded p-2 mb-4" required>
+
+                <input id="price" type="number" name="price" placeholder="0.00" class="w-full border rounded p-2 mb-4" required>
+
+                <textarea id="description" name="description" placeholder="Description" class="w-full border rounded p-2 mb-4"></textarea>
+
+                <input id="image" type="file" name="image" width="48" height="48"accept="assets/*">
 
                 <button id="saveProduct"
                         class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">
@@ -65,15 +78,95 @@
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">
-                        {{ __("You're logged in!") }}
-                    </div>
+                <h2> Products <h2>
+                   {{-- <div class="p-6 text-gray-900" id="product-list">
+                    
+                    </div> --}}
+                <div class="row">
+                    @include('products.partials.grid')
                 </div>
             </div>
         </div>
     </x-app-layout>
 
+<script>
+    window.routes = {
+        loadProducts: "{{ route('admin.products') }}",
+        saveProduct: "{{ route('admin.products.store') }}"
+    };
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const modal = document.getElementById('productModal');
+    const openModal = document.getElementById('OpenModal');
+    const closeModal = document.getElementById('closeModal');
+    const saveProduct = document.getElementById('saveProduct');
+    const productList = document.getElementById('product-list');
+
+    openModal.onclick = () => modal.classList.replace('hidden', 'flex');
+    closeModal.onclick = () => modal.classList.replace('flex', 'hidden');
+
+    function loadProducts() {
+        fetch("{{ route('admin.products') }}")
+            .then(res => res.json())
+            .then(products => {
+                productList.innerHTML = "";
+                products.forEach(p => {
+                    productList.innerHTML += `
+                        <div class="p-4 border rounded-lg shadow-sm bg-white mb-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-semibold">${p.name}</h3>
+                                <span class="text-sm text-gray-500">${p.sku}</span>
+                            </div>
+
+                            <div class="mt-2 text-indigo-600 font-bold">$${p.price}</div>
+
+                            ${p.image ? `
+                                <img src="/storage/${p.image}" class="w-32 h-32 object-cover rounded mt-3 border" />
+                            ` : `
+                                <div class="w-32 h-32 bg-gray-200 rounded mt-3 flex items-center justify-center text-gray-500">
+                                    No Image
+                                </div>
+                            `}
+
+                            ${p.description ? `<p class="mt-3 text-gray-700">${p.description}</p>` : ""}
+                        </div>
+                    `;
+                });
+            });
+    }
+
+    saveProduct.onclick = () => {
+        const formData = new FormData();
+        formData.append('sku', document.getElementById('sku').value);
+        formData.append('name', document.getElementById('name').value);
+        formData.append('description', document.getElementById('description').value);
+        formData.append('price', document.getElementById('price').value);
+
+        const image = document.getElementById('image');
+        if (image.files.length > 0) {
+            formData.append('image', image.files[0]);
+        }
+
+        fetch("{{ route('admin.products.store') }}", {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(() => {
+            modal.classList.replace('flex', 'hidden');
+            loadProducts();
+        });
+    };
+
+    loadProducts();
+});
+</script>
 
 </body>
 </html>
