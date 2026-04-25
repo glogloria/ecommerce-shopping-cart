@@ -7,18 +7,52 @@
                 @endif
 
                 <div class="card-body">
-                    <div class="card-container">
+                    <div class="two-column">
                         <h5 class="card-title">{{ $product->name }}</h5>
-                        <h5 class="card-title">{{ $product->sku }}</h5>
+                        <h5 class="card-title sku">{{ $product->sku }}</h5>
                     </diV>
-                    <p class="card-text">{{ $product->description }}</p>
-                    <p class="fw-bold">${{ number_format($product->price, 2) }}</p>
+                    <div class="two-column">
+                        <div> 
+                            <p class="subject"> Price </p>
+                            <p class="fw-bold">${{ number_format($product->price, 2) }}</p>
+                        </div>
+                        <div> 
+                            <p class="subject"> Quantity </p>
+                            <p class="fw-bold">{{ number_format($product->quantity) }}</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Display description if not null -->
+                    @if ($product->description)
+                        <div class="card-text">
+                            <p class="subject"> Description </p>
+                            
+                            <p> {{ $product->description }} </p>
+                        </div>
+                    @endif
+
+                    @if (!$product->description)
+                     <div class="card-text">
+                            <p class="subject"> Description </p>
+                            
+                            <p> No description available </p>
+                        </div>
+                    @endif
+
+
+                    @auth
+                        @if(Auth::user()->role === 'customer')
+                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                            @csrf
+                            <button class="btn btn-primary btn-sm">Add to Cart</button>
+                        </form>
+                        @endif
+                    @endauth
 
                     @auth
                         @if(Auth::user()->role === 'admin')
                             <div class="crud-container">
-                                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-warning"
-                                    >
+                                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-warning">
                                     Edit
                                 </a>
 
