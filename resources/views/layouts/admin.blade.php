@@ -12,9 +12,7 @@
 
     <!-- Vite -->
     @vite([
-        'resources/css/app.css',
-        'resources/css/dashboard.css',
-        'resources/js/app.js'
+        'resources/css/admin.css',
     ])
 
     <title>@yield('title', 'Admin Dashboard')</title>
