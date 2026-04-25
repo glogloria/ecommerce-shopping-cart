@@ -6,6 +6,9 @@ use App\Models\Product;
 
 // use Illuminate\Http\Request;
 
+/**
+ * Admin dashboard controller
+ */
 class DashboardController extends Controller
 {
     public function admin_index() {
