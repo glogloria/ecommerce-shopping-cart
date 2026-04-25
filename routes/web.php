@@ -64,6 +64,12 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->name('pro
 /**
  * Cart routes
  */
-route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+// Get cart
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+// Add product to cart
+Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add')->middleware('auth');
+// Remove product from cart
+Route::post('/cart/remove/{product}', [CartController::class, 'destroy'])->name('cart.remove')->middleware('auth');
+
 
 require __DIR__.'/auth.php';
