@@ -11,6 +11,7 @@
 <table class="w-full bg-white shadow rounded">
     <thead>
         <tr class="border-b">
+            <th class="p-3 text-left">SKU</th>
             <th class="p-3 text-left">Name</th>
             <th class="p-3 text-left">Image</th>
             <th class="p-3 text-left">Description</th>
@@ -20,6 +21,7 @@
     <tbody>
         @foreach ($products as $product)
         <tr class="border-b">
+            <td class="p-3">{{ $product->sku }}</td>
             <td class="p-3">{{ $product->name }}</td>
             <td class="p-3">{{ $product->image }}</td>
             <td class="p-3">{{ $product->description }}</td>
