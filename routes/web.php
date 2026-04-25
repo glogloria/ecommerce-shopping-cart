@@ -1,17 +1,21 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
-# Homepage
-Route::get("/", [HomeController::class, 'index'])->name('index');
-
 // Route to user registration form
 Route::get('/register', [RegisteredUserController::class, 'create']) ->name('register');
+
+
+/**
+ * Routes for customer facing pages
+ */
+Route::get("/", [HomeController::class, 'index'])->name('home');
 
 /**
  * Routes for admin
@@ -34,13 +38,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 });
 
-/**
- * Routes for customer
- */
-Route::middleware(['auth', 'customer'])->group(function () {
-    // Show home page
-    Route::get('/customer/index', [DashboardController::class, 'customer_index'])->name('customer.index');
-});
 
 /**
  * Profile update, delete
@@ -60,5 +57,13 @@ Route::get('/dashboard', function () {
  */
 // Get products
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+//Show products
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+
+/**
+ * Cart routes
+ */
+route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
 require __DIR__.'/auth.php';
