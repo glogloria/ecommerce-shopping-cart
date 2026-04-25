@@ -16,6 +16,7 @@
             <th class="p-3 text-left">Image</th>
             <th class="p-3 text-left">Description</th>
             <th class="p-3 text-left">Price</th>
+            <th class="p-3 text-left">Quantity</th>
         </tr>
     </thead>
     <tbody>
@@ -26,6 +27,7 @@
             <td class="p-3">{{ $product->image }}</td>
             <td class="p-3">{{ $product->description }}</td>
             <td class="p-3">${{ $product->price }}</td>
+            <td class="p-3">{{ $product->quantity }}</td>
         </tr>
         @endforeach
     </tbody>
