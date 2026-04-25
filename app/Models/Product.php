@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['sku', 'name', 'description', 'price', 'image'])]
+#[Fillable(['sku', 'name', 'description', 'price', 'image', 'quantity'])]
 class Product extends Model 
 {
 
