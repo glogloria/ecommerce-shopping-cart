@@ -21,7 +21,7 @@
 
                     <!-- Add Product  -->
                     <button id="OpenModal"
-                            class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700 transition">
+                            class="px-4 py-2 bg-black text-white rounded-md shadow hover:bg-indigo-700 transition">
                         Add New Product
                     </button>
 
@@ -39,42 +39,11 @@
         </x-slot>
 
         <!-- Add Product Modal -->
-        <div id="productModal"
-            class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
-
-            <div class="bg-white p-6 rounded shadow-lg w-full max-w-md">
-                <h2 class="text-xl font-semibold mb-4">Add New Product</h2>
-
-                <input id="sku"
-                    type="text"
-                    name="sku"
-                    placeholder="SKU"
-                    class="w-full border rounded p-2 mb-4" required>
-                
-                <input id="name"
-                    type="text"
-                    name="name"
-                    placeholder="Product name"
-                    class="w-full border rounded p-2 mb-4" required>
-
-                <input id="price" type="number" name="price" placeholder="0.00" class="w-full border rounded p-2 mb-4" required>
-
-                <textarea id="description" name="description" placeholder="Description" class="w-full border rounded p-2 mb-4"></textarea>
-
-                <input id="image" type="file" name="image" width="48" height="48"accept="assets/*">
-
-                <button id="saveProduct"
-                        class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">
-                    Save Product
-                </button>
-
-                <button id="closeModal"
-                        class="w-full mt-3 bg-gray-300 py-2 rounded hover:bg-gray-400">
-                    Cancel
-                </button>
+        <div id="productModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center">
+            <div class="bg-white p-6 rounded shadow-lg w-[500px]">
+                @include('admin.products.products-create')
             </div>
         </div>
-
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -144,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('name', document.getElementById('name').value);
         formData.append('description', document.getElementById('description').value);
         formData.append('price', document.getElementById('price').value);
+        formData.append('quantity', document.getElementById('quantity').value)
 
         const image = document.getElementById('image');
         if (image.files.length > 0) {
