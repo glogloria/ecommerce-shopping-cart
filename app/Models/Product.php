@@ -10,6 +10,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Product extends Model 
 {
 
+    /** 
+     * Don't require created_at, updated_at attributes
+     */
+    public $timestamps = false;
+
+    protected $table = 'products';
+    protected $guarded = [];
+
     public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }

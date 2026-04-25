@@ -8,6 +8,11 @@ use App\Models\Product;
 
 class CartItem extends Model
 {
+    /** 
+     * Don't require created_at, updated_at attributes
+     */
+    public $timestamps = false;
+
     protected $fillable = ['cart_id', 'product_id'];
 
     public function cart() {
