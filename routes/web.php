@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AddressController;
 use Illuminate\Support\Facades\Route;
 
 // User registration form
@@ -34,7 +35,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/admin/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
     // List all products
     Route::get('/admin/products', [ProductController::class, 'index'])->name('admin.products');
-
 });
 
 /**
@@ -60,6 +60,12 @@ Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     // Show all orders
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+
+    /**
+     * Address routes
+     */
+    // Add Address
+    Route::post('/address/store', [AddressController::class, 'store'])->name('address.store');
 
 });
 
