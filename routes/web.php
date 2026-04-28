@@ -2,28 +2,27 @@
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
-// Route to user registration form
+// User registration form
 Route::get('/register', [RegisteredUserController::class, 'create']) ->name('register');
 
-
-/**
- * Routes for customer facing pages
- */
+// Homepage
 Route::get("/", [HomeController::class, 'index'])->name('home');
 
 /**
  * Routes for admin
  */
 Route::middleware(['auth', 'admin'])->group(function () {
-    // Show admin dashboard
+    // Admin dashboard
     Route::get('/admin/dashboard', [DashboardController::class, 'admin_index'])->name('admin.dashboard');
-    // Show add Product form
+    // Add Product form
     Route::get('/admin/products/create', [ProductController::class, 'create'])->name('admin.products.create');
     // Save new product
     Route::post('/admin/products', [ProductController::class, 'store'])->name('admin.products.store');
@@ -38,38 +37,51 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 });
 
+/**
+ * Routes for customer facing pages
+ */
+Route::middleware(['auth', 'customer'])->group(function () {
+    /**
+     * Cart routes
+     */
+    // Get cart
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    // Add product to cart
+    Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add')->middleware('auth');
+    // Remove product from cart
+    Route::post('/cart/remove/{product}', [CartController::class, 'destroy'])->name('cart.remove')->middleware('auth');
+
+    /**
+     * Checkout routes
+     */
+    // Checkout
+    Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+    // Show individual order
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    // Show all orders
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+
+});
 
 /**
  * Profile update, delete
  */
 Route::middleware('auth')->group(function () {
+    Route::get('/customer/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
 /**
  * Product routes
  */
-// Get products
+// Show all products
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-//Show products
+//Show product
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
-
-/**
- * Cart routes
- */
-// Get cart
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-// Add product to cart
-Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add')->middleware('auth');
-// Remove product from cart
-Route::post('/cart/remove/{product}', [CartController::class, 'destroy'])->name('cart.remove')->middleware('auth');
+Route::get('/dashboard', [DashboardController::class, 'admin_index'])->name('dashboard');
 
 
 require __DIR__.'/auth.php';
