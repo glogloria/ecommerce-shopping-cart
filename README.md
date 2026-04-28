@@ -1,6 +1,6 @@
 # Shopping Cart Implementation
 
-A Laravel application that allows administrators to list products for sale to customers. This project uses php and node.js backend with a Tailwind CSS with vite and Bootstrap front-end
+A Laravel application that allows administrators to list products for sale to customers. This project uses php and node.js backend with a Tailwind CSS with vite and Bootstrap front-end.
 
 ## Tech Stack
 
@@ -29,7 +29,7 @@ Excluding views provided by Laraval (e.g. /auth, /profile)
 | /layouts        |customer| Customer layout |
 | /layouts        |guest| Guest layout (unused) |
 | /layouts        |navigation| Navigation layout (used for admin dashboard)|
-| /pages       |(empty)| |
+| /pages       || |
 | /partials       |customer-footer| Footer used in customer layout|
 | /partials       |customer-nav| Navigation bar used in customer layout|
 | /partials       |customer-nav| Navigation bar used in customer layout|
