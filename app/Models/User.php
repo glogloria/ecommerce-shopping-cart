@@ -41,6 +41,10 @@ class User extends Authenticatable
         return $this->hasMany(Product::class);
     }
 
+     public function addresses(): HasMany {
+        return $this->hasMany(Address::class);
+    }
+
     public function index(): array {
         $value = Cache::get('key');
 
