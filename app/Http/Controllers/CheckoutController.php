@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CartService;
+use Illuminate\Support\Facades\DB;
 use App\Models\Order;
 Use App\Models\OrderItem;
 
@@ -16,7 +17,7 @@ class CheckoutController extends Controller
     public function __construct(CartService $cart) {
         $this->cart = $cart;
     }
-    
+
     /**
      * Create order and checkout
      */
@@ -28,33 +29,53 @@ class CheckoutController extends Controller
             return back()->with('error', 'Cart is empty');
         }
 
-        // Create order
-        $order = Order::create([
-            'user_id' => auth()->id(),
-            'total' => $cartItems->sum(fn($item) => $item->product->price),
-        ]);
+        // Calculate cart total
+        $total = 0;
+        foreach ($cartItems as $cartItem) {
+            $total += $cartItem->price * $cartItem->quantity;
+        }
 
-        // Create order items
-        foreach($cartItems as $cartItem) {
-            $product = $cartItem->product;
+        // Prepared statements
+        $orderId = DB::selectOne(
+            "INSERT INTO orders (user_id, total) 
+                VALUES(?, ?) RETURNING id",
+                [
+                    auth()->id(),
+                    $total,
+                ]
+        )->id;
 
-            // Adjust quantity
-            $product->quantity -= 1;
-            $product->save();
+        foreach ($cartItems as $cartItem) {
+            DB::insert(
+                "INSERT INTO order_items (order_id, product_id, price, quantity)
+                VALUES (?, ?, ?, ?)",
+                [
+                    $orderId,
+                    $cartItem->product_id,
+                    $cartItem->price,
+                    $cartItem->quantity,
+                ]
+            );
 
-            // Creat order
-            orderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $product->product_id,
-                'quantity' => $cartItem->quantity,
-                'price' => $cartItem->quantity,
-            ]);
+            DB::update(
+                "UPDATE products SET quantity = quantity - ? WHERE id = ?",
+                [
+                    $cartItem->quantity,
+                    $cartItem->product_id,
+                ]
+            );
         }
 
         // Clear cart
-        $cart->items()->delete();
-        
-        return redirect()->route('orders.show', $order->id);
+        DB::delete(
+            "DELETE FROM cart_items WHERE cart_id = ?",
+            [
+                $cart->id
+            ]
+        );
+      
+
+        return redirect()->route('orders.show', $orderId);
 
     }
 
