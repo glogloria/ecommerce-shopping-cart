@@ -44,6 +44,7 @@
                         @if(Auth::user()->role === 'customer')
                         <form action="{{ route('cart.add', $product->id) }}" method="POST">
                             @csrf
+                            <input type="number" name="quantity" value="1" min="1" max="{{ $product->quantity }}">
                             <button class="btn btn-primary btn-sm">Add to Cart</button>
                         </form>
                         @endif
