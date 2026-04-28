@@ -20,10 +20,11 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">                
-                <!-- On home page-->
+                <!-- home page-->
                 @if (request()->routeIs('home'))
                     <li class="nav-item"><a class="nav-link" href="{{ route('cart.index') }}">Cart</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('orders.index') }}">Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('profile.show') }}">Profile</a></li>
                     <form method="POST" action="{{ route('logout') }}">
                             @csrf
                         <button class="logout-btn" type="submit">
@@ -31,10 +32,11 @@
                         </button>
                 @endif
 
-                <!-- On Cart page-->
+                <!-- Cart page-->
                 @if (request()->routeIs('cart.index'))
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('orders.index') }}">Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('profile.show') }}">Profile</a></li>
                     <form method="POST" action="{{ route('logout') }}">
                             @csrf
                         <button class="logout-btn" type="submit">
@@ -43,7 +45,45 @@
                     </form>
                 @endif
 
-                <!-- On Orders page-->
+                <!-- Orders page-->
+                @if (request()->routeIs('orders.index'))
+                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('cart.index') }}">Cart</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('profile.show') }}">Profile</a></li>
+                    <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                        <button class="logout-btn" type="submit">
+                            {{ __('Log Out') }}
+                        </button>
+                    </form>
+                @endif
+
+                <!-- Specific order page-->
+                @if (request()->routeIs('orders.show'))
+                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('cart.index') }}">Cart</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('orders.index') }}">Orders</a></li> 
+                    <li class="nav-item"><a class="nav-link" href="{{ route('profile.show') }}">Profile</a></li>
+                    <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                        <button class="logout-btn" type="submit">
+                            {{ __('Log Out') }}
+                        </button>
+                    </form>
+                @endif
+
+                <!-- Profile -->
+                @if (request()->routeIs('profile.show'))
+                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('cart.index') }}">Cart</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('orders.index') }}">Orders</a></li> 
+                    <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                        <button class="logout-btn" type="submit">
+                            {{ __('Log Out') }}
+                        </button>
+                    </form>
+                @endif
                 
             </ul>
         </div>
