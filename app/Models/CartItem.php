@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Cart;
 use App\Models\Product;
 
+#[Fillable(['cart_id', 'product_id', 'price', 'quantity'])]
 class CartItem extends Model
 {
     /** 
@@ -13,7 +15,6 @@ class CartItem extends Model
      */
     public $timestamps = false;
 
-    protected $fillable = ['cart_id', 'product_id'];
 
     public function cart() {
         return $this->belongsTo(Cart::class);
