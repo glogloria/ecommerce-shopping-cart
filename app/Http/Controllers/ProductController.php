@@ -8,19 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    // $path = $request->file('image') ->store('products', 'public');
     /**
-     * Display all product
+     * Display all products
      */
     public function index() {
-        $products = DB::select("SELECT * FROM products");
-        return response()->json($products);
-    }
-
-
-    public function publicIndex() {
-        $products = Product::orderBy('id', 'desc')->get();
-
+        $products = Product::where('quantity', '>', 0)->get();
         return view('products.index', compact('products'));
     }
 
@@ -33,7 +25,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store new product in database
      */
     public function store(Request $request)
     {
@@ -73,6 +65,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+
         return view('products.show', compact('product'));
     }
 
