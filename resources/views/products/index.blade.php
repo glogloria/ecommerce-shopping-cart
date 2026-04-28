@@ -12,6 +12,10 @@
                         ${{ number_format($product->price, 2) }}
                     </div>
 
+                     <div class="text-indigo-600 font-bold mt-2">
+                        ${{ number_format($product->quantity) }}
+                    </div>
+
                     @if ($product->image)
                         <img src="/storage/{{ $product->image }}"
                              class="w-32 h-32 object-cover rounded mt-3 border">
