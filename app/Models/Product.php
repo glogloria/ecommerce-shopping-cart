@@ -15,12 +15,11 @@ class Product extends Model
      */
     public $timestamps = false;
 
-    protected $table = 'products';
-    protected $guarded = [];
-
     public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }
+
+    
 
 
 }
